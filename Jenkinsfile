@@ -2,16 +2,16 @@ pipeline{
   agent any
 
   stages{
-    stage("Build"){
-      steps{
-        sh 'npm run build'
-      }
-    }
-
     stage('Install Dependencies') {
         steps {
             sh 'npm ci'
         }
+    }
+
+    stage("Build"){
+      steps{
+        sh 'npm run build'
+      }
     }
 
     stage("Artifact build"){
