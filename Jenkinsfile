@@ -8,6 +8,12 @@ pipeline{
       }
     }
 
+    stage('Install Dependencies') {
+        steps {
+            sh 'npm ci'
+        }
+    }
+
     stage("Artifact build"){
       steps{
         archiveArtifacts artifacts: 'dist/**'
