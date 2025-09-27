@@ -1,6 +1,10 @@
 pipeline{
   agent any
 
+tools {
+  nodejs 'Node_22'
+}
+
   stages{
     stage("Update node"){
       steps{
