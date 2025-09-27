@@ -1,8 +1,8 @@
 name: "Schedule pipeline"
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'   # every 5 minutes (more reliable)
+  # schedule:
+  #   - cron: '*/5 * * * *'   # every 5 minutes (more reliable)
   workflow_dispatch:         # lets you also run manually
 
 jobs:
