@@ -1,0 +1,41 @@
+name: React ci workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - closed
+
+  workflow_dispatch:
+
+jobs:
+  on-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.0
+          cache: npm
+
+      - name: install dependency
+        run: npm install
+
+      - name: build project
+        run: npm run build
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: build
+          name: deployble-package
