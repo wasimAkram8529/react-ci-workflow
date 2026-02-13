@@ -1,9 +1,13 @@
 pipeline{
-  agent any
+  agent {
+    docker {
+       image 'node:22'
+    }
+  }
 
-tools {
-  nodejs 'Node_22'
-}
+// tools {
+//   nodejs 'Node_22'
+// }
 
   stages{
     stage("Update node"){
