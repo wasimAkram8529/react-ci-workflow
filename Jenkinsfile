@@ -1,13 +1,14 @@
+def shortCommit() {
+  return sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+}
+
 pipeline{
   agent {
     docker {
        image 'node:22'
+       label 'agent1'
     }
   }
-
-// tools {
-//   nodejs 'Node_22'
-// }
 
   stages{
     stage("Update node"){
@@ -21,7 +22,7 @@ pipeline{
     }
     stage('Install Dependencies') {
         steps {
-            sh 'npm i'
+            sh 'npm ci'
         }
     }
 
@@ -31,10 +32,41 @@ pipeline{
       }
     }
 
+    stage('Test and lint (parallel)') {
+       parallel {
+
+        stage ('Tets'){
+          steps {
+            sh 'npm run test'
+          }
+        }
+  
+        stage ('Lint') {
+          steps {
+            sh 'npm run lint'
+          }
+        } 
+
+       }
+    }
+
     stage("Artifact build"){
       steps{
-        archiveArtifacts artifacts: 'dist/**'
+        archiveArtifacts artifacts: 'dist/**', fingerprint: true
       }
     }
   }
+
+  post {
+        success {
+            echo "Pipeline succeeded"
+        }
+        failure {
+            echo "Pipeline failed"
+        }
+        always {
+            echo "Pipeline finished"
+        }
+    }
+
 }
